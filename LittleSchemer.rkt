@@ -125,5 +125,34 @@
 ;(multisubst "x" "a" '("b" "a" "a" "c" "a"))
 
 
+(define my+
+  (lambda (a b)
+    (cond 
+      [(zero? b) a]
+      [else (add1 (+ a (sub1 b)))])))
 
+;(+ 190 10)
 
+(define my-
+  (lambda (a b)
+    (cond 
+      [(zero? b) a]
+      [else (sub1 (- a (sub1 b)))])))
+
+;(my- 200 10)
+
+(define addtup 
+  (lambda (tup)
+    (cond 
+      [(null? tup) 0]
+      [else (+ (car tup) (addtup (cdr tup)))])))
+
+;(addtup '(1 2 3 4 5 6))
+
+(define my* 
+  (lambda (a b)
+    (cond 
+    [(zero? b) 0]
+    [else (+ a (my* a (sub1 b)))])))
+
+;(my* 10 2)
