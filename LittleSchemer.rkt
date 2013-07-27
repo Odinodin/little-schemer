@@ -155,4 +155,77 @@
     [(zero? b) 0]
     [else (+ a (my* a (sub1 b)))])))
 
-;(my* 10 2)
+;;(my* 10 5)
+;; This expands to (10 + 10 + 10 + 10 + 10 + 0) due to recursion
+
+
+(define tup+ 
+  (lambda (tup1 tup2) 
+    (cond 
+      [(and (null? tup1) (null? tup2)) '()] ; Can remove this line, not needed. Why?:)
+      [(null? tup1) tup2] ; If tup1 is shorter than tup2, return tup2
+      [(null? tup2) tup1]
+      [else (cons 
+             (+ 
+              (car tup1) (car tup2)) 
+             (tup+ 
+              (cdr tup1) (cdr tup2)))])))
+
+;;(tup+ '(1 2 3) '(2 1 0))
+;;(tup+ '(1 1 1) '(3))
+
+(define my>
+  (lambda (a b)
+    (cond 
+      [(zero? a) #f] ; NB Order important ... if a == b
+      [(zero? b) #t]
+      [else (my> (sub1 a) (sub1 b))])))
+
+;; (my> 10 11)
+
+(define my< 
+  (lambda (a b)
+    (cond
+      [(zero? b) #f]
+      [(zero? a) #t]
+      [else (my< (sub1 a) (sub1 b))])))
+
+
+;; (my< 10 11)
+
+(define my= 
+  (lambda (a b)
+    (not (or (< a b) (> a b)))))
+
+(define my=2
+  (lambda (a b)
+    (cond
+      [(< a b) #f]
+      [(> a b) #f]
+      [else #t])))
+
+;(my=2 10 11)
+
+(define my-exp
+ (lambda (x pow)
+   (cond
+     [(zero? pow) 1] ; because  x * 1 is x
+     [else (* x (my-exp x (sub1 pow)))])))
+
+;; (my-exp 5 3)
+
+(define my-length
+  (lambda (lat)
+    (cond
+      [(null? lat) 0]
+      [else (add1 (my-length (cdr lat)))])))
+
+;(my-length '(1 1 2 3 4))
+
+(define my-pick
+  (lambda (nth lat)
+    (cond 
+      [(zero? (sub1 nth)) (car lat)]
+      [else (my-pick (sub1 nth) (cdr lat))])))
+
+;; (my-pick 1 '(1 2))
