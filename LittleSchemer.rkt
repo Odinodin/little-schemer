@@ -229,3 +229,13 @@
       [else (my-pick (sub1 nth) (cdr lat))])))
 
 ;; (my-pick 1 '(1 2))
+
+;; Remove the item at the nth place in the list of atoms
+(define my-rempick
+  (lambda (nth lat) 
+    (cond
+      [(zero? (sub1 nth)) (cdr lat)]
+      [else (cons (car lat) 
+                  (my-rempick (sub1 nth) (cdr lat)))])))
+
+(my-rempick 2 '(1 2 3 4))
