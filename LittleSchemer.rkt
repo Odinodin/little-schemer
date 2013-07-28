@@ -297,3 +297,26 @@
           (rember* x (cdr lat)))])))
 
 ;; (rember* 1 '(1 (1 2 3) 1 ((1) 1 2)))
+
+
+(define insertR*
+  (lambda (new old the_list)
+    (cond 
+      [(null? the_list) '()]
+      [(atom? (car the_list)) 
+       (cond
+         [(eqan? old (car the_list)) 
+            (cons 
+              old 
+              (cons 
+                new 
+                (insertR* new old (cdr the_list))))]
+         [else (cons 
+                 (car the_list) 
+                 (insertR* new old (cdr the_list)))])]
+      [else 
+        (cons 
+          (insertR* new old (car the_list))
+          (insertR* new old (cdr the_list)))])))
+
+;; (insertR* "x" "a" '("a" "b" ("a")))
