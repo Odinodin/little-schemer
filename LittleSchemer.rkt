@@ -320,3 +320,19 @@
           (insertR* new old (cdr the_list)))])))
 
 ;; (insertR* "x" "a" '("a" "b" ("a")))
+
+
+(define occur*
+  (lambda (x the_list)
+    (cond
+      [(null? the_list) 0]
+      [(atom? (car the_list)) 
+         (cond
+           [(eq? x (car the_list)) (add1 (occur* x (cdr the_list)))]
+           [else (occur* x (cdr the_list))])]
+      [else 
+         (+ 
+          (occur* x (car the_list)) ;; Count everything in the sublist
+          (occur* x (cdr the_list)))]))) ;; Count occurenses in the tail
+
+;; (occur* "a" '("a" (("a" "b") 1 2) 2))
