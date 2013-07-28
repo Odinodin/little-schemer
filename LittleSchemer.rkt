@@ -336,3 +336,17 @@
           (occur* x (cdr the_list)))]))) ;; Count occurenses in the tail
 
 ;; (occur* "a" '("a" (("a" "b") 1 2) 2))
+
+
+(define subst* 
+  (lambda (new old the_list)
+    (cond
+      [(null? the_list) '()]
+      [(atom? (car the_list))
+       (cond
+         [(eq? old (car the_list)) (cons new (subst* new old (cdr the_list)))]
+         [else (cons (car the_list) (subst* new old (cdr the_list)))])]
+      [else 
+         (cons (subst* new old (car the_list)) (subst* new old (cdr the_list)))])))
+
+(subst* "x" "a" '(1 2 "a" ((2 "a" 2) "a")))
