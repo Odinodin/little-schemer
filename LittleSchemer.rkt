@@ -238,4 +238,43 @@
       [else (cons (car lat) 
                   (my-rempick (sub1 nth) (cdr lat)))])))
 
-(my-rempick 2 '(1 2 3 4))
+;; (my-rempick 2 '(1 2 3 4))
+
+(define no-nums
+  (lambda (lat)
+    (cond
+      [(null? lat) '()]
+      [(number? (car lat)) 
+         (no-nums (cdr lat))]
+      [else 
+       (cons (car lat) (no-nums (cdr lat)))])))
+  
+;; (no-nums '(1 12 3 "a" "b" 1))
+
+(define all-nums
+  (lambda (lat)
+    (cond
+      [(null? lat) '()]
+      [(number? (car lat)) (cons (car lat) (all-nums (cdr lat)))]
+      [else (all-nums (cdr lat))])))
+
+;; (all-nums '(1 2 "a" 3 4))
+
+(define eqan? 
+  (lambda (a b)
+    (cond 
+      [(and (number? a) (number? b)) (= a b)]
+      [else (eq? a b)]
+      )
+    )
+  )
+;; (eqan? "a" "a")
+
+(define occur
+  (lambda (x lat)
+    (cond
+      [(null? lat) 0]
+      [(eqan? x (car lat)) (add1 (occur x (cdr lat)))]
+      [else (occur x (cdr lat))])))
+
+(occur 1 '("a" 1 1 1 "b" 1))
