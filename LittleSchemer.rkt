@@ -277,4 +277,23 @@
       [(eqan? x (car lat)) (add1 (occur x (cdr lat)))]
       [else (occur x (cdr lat))])))
 
-(occur 1 '("a" 1 1 1 "b" 1))
+;; (occur 1 '("a" 1 1 1 "b" 1))
+
+(define rember* 
+  (lambda (x lat)
+    (cond
+      [(null? lat) '()] 
+      [(atom? (car lat))
+         (cond 
+           [(eqan? x (car lat)) 
+            (rember* x (cdr lat))]
+           [else 
+            (cons 
+              (car lat) 
+              (rember* x (cdr lat)))])]
+      [else 
+         (cons 
+          (rember* x (car lat))
+          (rember* x (cdr lat)))])))
+
+;; (rember* 1 '(1 (1 2 3) 1 ((1) 1 2)))
