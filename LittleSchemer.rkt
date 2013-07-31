@@ -349,4 +349,16 @@
       [else 
          (cons (subst* new old (car the_list)) (subst* new old (cdr the_list)))])))
 
-(subst* "x" "a" '(1 2 "a" ((2 "a" 2) "a")))
+;; (subst* "x" "a" '(1 2 "a" ((2 "a" 2) "a")))
+
+(define insertL*
+  (lambda (new old the_list)
+    (cond 
+      [(null? the_list) '()]
+      [(atom? (car the_list)) 
+       (cond
+         [(eq? old (car the_list)) (cons new (cons old (insertL* new old (cdr the_list))))]
+         [else (cons (car the_list) (insertL* new old (cdr the_list)))])]
+      [else (cons (insertL* new old (car the_list)) (insertL* new old (cdr the_list)))])))
+
+(insertL* "x" "a" '("a" ("b" "a") "a"))
