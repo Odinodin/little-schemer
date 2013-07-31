@@ -361,4 +361,18 @@
          [else (cons (car the_list) (insertL* new old (cdr the_list)))])]
       [else (cons (insertL* new old (car the_list)) (insertL* new old (cdr the_list)))])))
 
-(insertL* "x" "a" '("a" ("b" "a") "a"))
+;; (insertL* "x" "a" '("a" ("b" "a") "a"))
+
+(define member* 
+  (lambda (a l)
+    (cond
+      [(null? l) #f]
+      [(atom? (car l)) 
+       (cond
+         [(eq? a (car l)) #t]
+         [else (member* a (cdr l))]
+         )
+       ]
+      [else (or (member* a (car l)) (member* a (cdr l)))])))
+
+;; (member* 34 '(1 2 34 (1 2 "a")))
