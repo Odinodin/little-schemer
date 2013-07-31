@@ -376,3 +376,37 @@
       [else (or (member* a (car l)) (member* a (cdr l)))])))
 
 ;; (member* 34 '(1 2 34 (1 2 "a")))
+
+(define leftmost 
+  (lambda (l)
+    (cond
+      [(atom? (car l)) (car l)]
+      [else (leftmost (car l))]
+      )
+    )
+  )
+
+;; (leftmost '(() (1 2 3) 4 5))
+
+(define eqlist?
+  (lambda (l1 l2)
+    (cond
+      [(and (null? l1) (null? l2)) #t]
+      [(or (null? l1) (null? l2)) #f]
+      ;; Both are lists -> eqlist both heads AND continue with tail. 
+      [(and (not (atom? (car l1))) (not (atom? (car l2)))) (and (eqlist? (car l1) (car l2)) (eqlist? (cdr l1) (cdr l2)))]
+      [else ; Both are atoms 
+       (and (eqan? (car l1) (car l2)) (eqlist? (cdr l1) (cdr l2)))])))
+
+;(eqlist? '(1 2 (3 4 5 (6))) '(1 2 (3 4 5 (6))))
+
+(define equal? 
+  (lambda (a b)
+    (cond
+      [(and (atom? a) (atom? b)) 
+        (eqan? a b)]
+      [(or (atom? a) (atom? b)) #f] ; xor one is a list
+      [else (eqlist? a b)]))) ; Both are lists
+
+;; (equal? 1 1)
+(equal? '(2 3 4 ("a")) '(2 3 4 ("a")))
