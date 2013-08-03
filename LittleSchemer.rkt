@@ -409,4 +409,53 @@
       [else (eqlist? a b)]))) ; Both are lists
 
 ;; (equal? 1 1)
-(equal? '(2 3 4 ("a")) '(2 3 4 ("a")))
+;; (equal? '(2 3 4 ("a")) '(2 3 4 ("a")))
+
+;; pow
+(define pow
+  (lambda (n m)
+    (cond
+      ((zero? m) 1)
+      (else (* n (pow n (sub1 m)))))))
+
+;; Checks if expressions are numeric expressions with +, * and pow, e.g (1 + (3 * 5) + (10 pow 30))
+(define first-numbered? 
+  (lambda (x)
+    (cond
+      [(atom? x) (number? x)]
+      [(eq? 'pow (car (cdr x))) (and (first-numbered? (car x)) (first-numbered? (car (cdr (cdr x)))))]
+      [(eq? '+ (car (cdr x))) (and (first-numbered? (car x)) (first-numbered? (car (cdr (cdr x)))))]
+      [(eq? '* (car (cdr x))) (and (first-numbered? (car x)) (first-numbered? (car (cdr (cdr x)))))])))
+
+;; (numbered? '(1 pow 2)
+
+;; Simplified numbered
+(define numbered?
+  (lambda (x)
+    (cond 
+      [(atom? x) (number? x)]
+      [else 
+       (and 
+        (numbered? (car x)) 
+        (numbered? (car (cdr (cdr x)))))])))
+
+;; (numbered? '(1 pow ()))
+
+(define value
+  (lambda (x)
+    (cond
+      [(atom? x) x]
+      [(eq? '* (car x)) 
+         (* (value (car (cdr x))) 
+            (value (car (cdr (cdr x)))))]
+      [(eq? '+ (car x)) 
+         (+ (value (car (cdr x))) 
+            (value (car (cdr (cdr x)))))]
+      [else 
+         (pow (value (car (cdr x))) 
+              (value (car (cdr (cdr x)))))]
+      )
+    )
+  )
+
+; (value '(+ 1 2))
